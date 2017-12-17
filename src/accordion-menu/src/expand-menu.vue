@@ -16,14 +16,14 @@
                     <i class="menu-icon iconfont" :class="node.icon"></i>
                     <span class="menu-text">{{node.text}}</span>
                     <i class="menu-arrow" 
-                       :class="{'arrow-up': !node.subMenuOff}" 
+                       :class="{'arrow-up': !node.onExpand}" 
                        v-if="node.children.length > 0">
                        <i class="iconfont icon-arrow"></i>
                     </i>
                 </li>
                 
                 <li class="sub-wrapper" 
-                    :class="{off: node.subMenuOff}" 
+                    :class="{off: node.onExpand}" 
                     :style="{height: `${node.children.length * 44}px`}"
                     v-if="node.children.length > 0" 
                     :key="`${node.id}_sub`">
@@ -61,19 +61,11 @@
                 immediate: true,
                 handler(source) {
                     this.localSource = source.map(item => {
-                        if (item.onActive) {
-                            return {
-                                ...item,
-                                onHover: false,
-                                subMenuOff: false,
-                            };
-                        }
-                        return {
-                            ...item,
+                        return Object.assign({
                             onActive: false,
                             onHover: false,
-                            subMenuOff: false,
-                        };
+                            onExpand: false
+                        }, item)
                     });
                 },
             },
@@ -91,32 +83,18 @@
             },
             handleClick(node) {
                 if (node) {
-                    node.subMenuOff = !node.subMenuOff;
+                    // node.onExpand = !node.onExpand;
                     if (node.children.length === 0) {
-                        // this.$dispatch('accordion-menu', 'expand-menu-click', node);
                         this.$emit('menu-click', node);
+                    } else {
+                        this.$emit('menu-toggle', node);
                     }
                 }
             },
             handleSubMenuClick(node) {
                 this.$emit('menu-click', node);
             },
-        },
-        created() {
-            this.$on('handle-expand-menu-click', nodes => {
-                // 判断节点是否在集合中
-                const nodeIncluded = (target, collection) =>
-                    collection.some(node => node.id === target.id);
-                this.localSource.forEach(source => {
-                    if (nodeIncluded(source, nodes)) {
-                        source.onActive = true;
-                        source.subMenuOff = false;
-                    } else {
-                        source.onActive = false;
-                    }
-                });
-            });
-        },
+        }
     };
 </script>
 
