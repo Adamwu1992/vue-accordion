@@ -1,4 +1,4 @@
-# y
+# Vue Accordion Menu
 
 > A Vue.js project
 
