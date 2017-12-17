@@ -32,10 +32,14 @@
     .accordion-body {
         width: 46px;
         height: 100%;
-        overflow: auto;
         transition: width .2s ease;
         &.expand {
             width: 180px;
+        }
+
+        .accrodion-contents {
+            height: 100%;
+            overflow: auto;
         }
 
         .fade-enter-active {

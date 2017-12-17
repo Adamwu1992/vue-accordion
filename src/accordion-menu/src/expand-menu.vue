@@ -64,7 +64,7 @@
                         return Object.assign({
                             onActive: false,
                             onHover: false,
-                            onExpand: false
+                            onExpand: true
                         }, item)
                     });
                 },

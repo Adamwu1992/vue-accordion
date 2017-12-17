@@ -77,15 +77,12 @@
         },
         methods: {
             handleTriggerClick() {
-                console.log('click');
                 this.expandMenu = !this.expandMenu;
             },
             onBeforeEnter() {
-                console.log('before enter');
                 this.expandIconMenu = false;
             },
             onAfterLeave() {
-                console.log('after leave');
                 this.expandIconMenu = true;
             },
             /**

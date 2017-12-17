@@ -10,7 +10,7 @@
 
                 <i class="menu-icon iconfont" :class="menu.icon"></i>
                 <shrink-sub-menu :source="menu" 
-                                 v-if="menu.onHover"   
+                                 v-show="menu.onHover"   
                                  @menu-click="handleSubMenuClick" 
                                  @mouseover="handleHover(menu)" 
                                  @mouseout="handleHoverOff(menu)" />
@@ -36,28 +36,21 @@
                 immediate: true,
                 handler(source) {
                     this.localSource = source.map(item => {
-                        if (item.onActive) {
-                            return {
-                                ...item,
-                                onHover: false,
-                                subMenuOff: false,
-                            };
-                        }
-                        return {
-                            ...item,
+                        return Object.assign({
                             onActive: false,
-                            onHover: false,
-                            subMenuOff: false,
-                        };
+                            onHover: false
+                        }, item)
                     });
                 },
             },
         },
         methods: {
             handleMenuClick(node) {
+                console.log('asdasdasd', node);
                 if (node.children.length > 0) {
                     return;
                 }
+                console.log('lllll');
                 this.$emit('menu-click', node);
             },
             handleSubMenuClick(node) {
