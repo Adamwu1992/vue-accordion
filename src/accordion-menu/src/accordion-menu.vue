@@ -67,7 +67,7 @@
             activeMenu: {
                 immediate: true,
                 handler(val) {
-                    console.log('in watch ', val);
+                    if (!val) return;
                     const nodeShouldOnActive = this.findParentChain(this.activeMenu);
                     if (nodeShouldOnActive.length > 0) {
                         this.handleMenuClick(nodeShouldOnActive);
@@ -84,60 +84,6 @@
             },
             onAfterLeave() {
                 this.expandIconMenu = true;
-            },
-            /**
-             * 深拷贝数据源
-             */
-            deepCopy(callback) {
-                /* eslint no-underscore-dangle: 0 */
-                const res = [];
-                const map = {};
-                let targetPointer = null;
-                traverse(this.localSource || this.source, {
-                    enter(node) {
-                        const _node = { ...node, children: [] };
-                        if (typeof callback === 'function') {
-                            callback(_node);
-                        }
-                        if (targetPointer === null) {
-                            res.push(_node);
-                            map[_node.id] = _node;
-                            targetPointer = _node;
-                        } else {
-                            targetPointer.children.push(_node);
-                            map[_node.id] = _node;
-                            targetPointer = _node;
-                        }
-                    },
-                    exit(node, stack) {
-                        const l = stack.length;
-                        if (l > 0) {
-                            targetPointer = map[stack[l - 1].id];
-                        } else {
-                            targetPointer = null;
-                        }
-                    },
-                });
-                return res;
-            },
-            /**
-             * 找出节点所有的父节点
-             */
-            findParentChain(target) {
-                if (!target) return [];
-                const targetId = typeof target === 'object' ? target.id : target;
-                let parentChain = [];
-                if (!this.localSource) {
-                    this.localSource = this.deepCopy();
-                }
-                traverse(this.localSource, {
-                    enter(node, stack) {
-                        if (node.id === targetId) {
-                            parentChain = stack.map(item => item);
-                        }
-                    },
-                });
-                return parentChain;
             },
             /**
              * 菜单点击
@@ -175,13 +121,97 @@
                     }
                 });
                 this.localSource = newTreeNodes;
+            },
+            /**
+             * 深拷贝数据源
+             */
+            deepCopy(callback) {
+                if (typeof callback === 'function') {
+                    callback = {
+                        enter: callback
+                    }
+                }
+                /* eslint no-underscore-dangle: 0 */
+                const res = [];
+                const map = {};
+                let targetPointer = null;
+                traverse(this.localSource || this.source, {
+                    enter(node) {
+                        const _node = { ...node, children: [] };
+                        if (callback && typeof callback.enter === 'function') {
+                            callback.enter(_node);
+                        }
+                        if (targetPointer === null) {
+                            res.push(_node);
+                            map[_node.id] = _node;
+                            targetPointer = _node;
+                        } else {
+                            targetPointer.children.push(_node);
+                            map[_node.id] = _node;
+                            targetPointer = _node;
+                        }
+                    },
+                    exit(node, stack) {
+                        const l = stack.length;
+                        if (l > 0) {
+                            targetPointer = map[stack[l - 1].id];
+                        } else {
+                            targetPointer = null;
+                        }
+                        if (callback && typeof callback.exit === 'function') {
+                            callback.exit();
+                        }
+                    },
+                });
+                return res;
+            },
+            /**
+             * 找出节点所有的父节点
+             */
+            findParentChain(target) {
+                if (!target) return [];
+                const targetId = typeof target === 'object' ? target.id : target;
+                let parentChain = [];
+                if (!this.localSource) {
+                    this.localSource = this.deepCopy();
+                }
+                traverse(this.localSource, {
+                    enter(node, stack) {
+                        if (node.id === targetId) {
+                            parentChain = stack.map(item => item);
+                        }
+                    },
+                });
+                return parentChain;
+            },
+            /**
+             * 默认激活菜单第一项
+             */
+            activeDefaultMenu() {
+                let firstMenuFinded = false;
+                const tree = this.deepCopy({
+                    enter(node) {
+                        if (!firstMenuFinded) {
+                            node.onActive = true;
+                            node.onExpand = true;
+                        }
+                    },
+                    exit() {
+                        firstMenuFinded = true;
+                    }
+                })
+                this.localSource = tree;
             }
+            
         },
         created() {
-            console.log('created');
             // 如果指定了activeName，watch activeName回调函数会在created之前执行
             if (!this.localSource) {
                 this.localSource = this.deepCopy();
+            }
+            // 如果没有外部指定激活菜单，默认激活第一个菜单
+            if (!this.activeMenu) {
+                this.activeDefaultMenu();
             }
         },
     };

@@ -138,7 +138,7 @@ export default {
                   ]
               }
           ],
-          defaultMenu: 'shapingba'
+          defaultMenu: null
       }
   },
   methods: {
