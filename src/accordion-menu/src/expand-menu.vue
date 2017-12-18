@@ -13,7 +13,7 @@
                     @mouseover="handleHover(node)" 
                     @mouseout="handleHoverOff(node)">
 
-                    <i class="menu-icon iconfont" :class="node.icon"></i>
+                    <i class="menu-icon iconfont" :class="node.icon || 'icon-default'"></i>
                     <span class="menu-text">{{node.text}}</span>
                     <i class="menu-arrow" 
                        :class="{'arrow-up': node.onExpand}" 
