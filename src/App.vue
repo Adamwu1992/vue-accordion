@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <accordion-menu :source="source" />
+    <accordion-menu :source="source" @menu-click="onMenuClick" :activeMenu="defaultMenu" />
   </div>
 </template>
 
@@ -137,8 +137,19 @@ export default {
                       }
                   ]
               }
-          ]
+          ],
+          defaultMenu: 'shapingba'
       }
+  },
+  methods: {
+      onMenuClick(node) {
+          console.log('on menu click', node);
+      }
+  },
+  mounted() {
+      setTimeout(() => {
+          this.defaultMenu = 'jingan'
+      }, 2000);
   }
 }
 </script>

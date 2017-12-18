@@ -127,6 +127,9 @@
                 if (!target) return [];
                 const targetId = typeof target === 'object' ? target.id : target;
                 let parentChain = [];
+                if (!this.localSource) {
+                    this.localSource = this.deepCopy();
+                }
                 traverse(this.localSource, {
                     enter(node, stack) {
                         if (node.id === targetId) {
@@ -153,6 +156,7 @@
                 const newTreeNodes = this.deepCopy(node => {
                     if (nodeIncludes(node)) {
                         node.onActive = true;
+                        node.onExpand = true;
                     } else {
                         node.onActive = false;
                     }
@@ -174,7 +178,11 @@
             }
         },
         created() {
-            this.localSource = this.deepCopy();
+            console.log('created');
+            // 如果指定了activeName，watch activeName回调函数会在created之前执行
+            if (!this.localSource) {
+                this.localSource = this.deepCopy();
+            }
         },
     };
 </script>

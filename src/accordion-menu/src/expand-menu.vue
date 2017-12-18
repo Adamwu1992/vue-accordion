@@ -16,14 +16,14 @@
                     <i class="menu-icon iconfont" :class="node.icon"></i>
                     <span class="menu-text">{{node.text}}</span>
                     <i class="menu-arrow" 
-                       :class="{'arrow-up': !node.onExpand}" 
+                       :class="{'arrow-up': node.onExpand}" 
                        v-if="node.children.length > 0">
                        <i class="iconfont icon-arrow"></i>
                     </i>
                 </li>
                 
                 <li class="sub-wrapper" 
-                    :class="{off: node.onExpand}" 
+                    :class="{off: !node.onExpand}" 
                     :style="{height: `${node.children.length * 44}px`}"
                     v-if="node.children.length > 0" 
                     :key="`${node.id}_sub`">
@@ -64,7 +64,7 @@
                         return Object.assign({
                             onActive: false,
                             onHover: false,
-                            onExpand: true
+                            onExpand: false
                         }, item)
                     });
                 },
@@ -83,7 +83,6 @@
             },
             handleClick(node) {
                 if (node) {
-                    // node.onExpand = !node.onExpand;
                     if (node.children.length === 0) {
                         this.$emit('menu-click', node);
                     } else {
