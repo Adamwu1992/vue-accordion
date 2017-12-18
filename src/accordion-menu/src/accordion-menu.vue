@@ -97,7 +97,7 @@
                     targetNodes = this.findParentChain(target);
                 }
 
-                const nodeIncludes = node => targetNodes.some(target => target.id === node.id);
+                const nodeIncludes = node => targetNodes.some(t => t.id === node.id);
 
                 const newTreeNodes = this.deepCopy(node => {
                     if (nodeIncludes(node)) {
