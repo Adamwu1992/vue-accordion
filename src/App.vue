@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <accordion-menu :source="source" @menu-click="onMenuClick" :activeMenu="defaultMenu" />
+    <accordion-menu :className="['my-menu', 'awesome-menu']" :source="source" @menu-click="onMenuClick" :activeMenu="defaultMenu" />
   </div>
 </template>
 

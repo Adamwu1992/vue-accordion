@@ -1,5 +1,5 @@
 <template>
-    <div class="accordtion-menu-wrapper">
+    <div class="accordtion-menu-wrapper" :class="className">
        <div class="accordion-body" :class="{expand: isWrapperExpand}">
             <transition name="fade" 
                         @before-enter="onBeforeEnter" 
@@ -44,6 +44,9 @@
             activeMenu: {
                 type: [String, Object],
             },
+            className: {
+                type: [String, Array]
+            }
         },
         data() {
             return {
@@ -99,17 +102,19 @@
 
                 const nodeIncludes = node => targetNodes.some(t => t.id === node.id);
 
+                let activeMenu = null;
                 const newTreeNodes = this.deepCopy(node => {
                     if (nodeIncludes(node)) {
                         node.onActive = true;
                         node.onExpand = true;
+                        activeMenu = node;
                     } else {
                         node.onActive = false;
                     }
                 });
                 this.localSource = newTreeNodes;
                 // 通知外部引用者菜单被点击
-                this.$emit('menu-click', target);
+                this.$emit('menu-click', activeMenu);
             },
             /**
              * 菜单展开或关闭
@@ -189,11 +194,13 @@
              */
             activeDefaultMenu() {
                 let firstMenuFinded = false;
+                let activeMenu = null;
                 const tree = this.deepCopy({
                     enter(node) {
                         if (!firstMenuFinded) {
                             node.onActive = true;
                             node.onExpand = true;
+                            activeMenu = node;
                         }
                     },
                     exit() {
@@ -201,6 +208,8 @@
                     }
                 })
                 this.localSource = tree;
+                // 通知外部引用者菜单被点击
+                this.$emit('menu-click', activeMenu);
             }
             
         },
