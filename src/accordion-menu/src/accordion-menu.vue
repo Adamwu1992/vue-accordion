@@ -65,12 +65,31 @@
         },
         watch: {
             /**
+             * 响应菜单数据变化
+             */
+            source: {
+                immediate: true,
+                handler(val) {
+                    if (!val && val.length === 0) {
+                        this.localSource = [];
+                        return;
+                    }
+                    this.localSource = this.deepCopy(val);
+                }
+            },
+            /**
              * 从外部打开指定菜单
              */
             activeMenu: {
                 immediate: true,
                 handler(val) {
-                    if (!val) return;
+                    // 如果没有外部指定激活菜单，默认激活第一个菜单
+                    if (!val) {
+                        if (this.localSource && this.localSource.length > 0) {
+                            this.activeDefaultMenu();
+                        }
+                        return
+                    };
                     const nodeShouldOnActive = this.findParentChain(this.activeMenu);
                     if (nodeShouldOnActive.length > 0) {
                         this.handleMenuClick(nodeShouldOnActive);
@@ -103,7 +122,7 @@
                 const nodeIncludes = node => targetNodes.some(t => t.id === node.id);
 
                 let activeMenu = null;
-                const newTreeNodes = this.deepCopy(node => {
+                const newTreeNodes = this.deepCopy(this.localSource, node => {
                     if (nodeIncludes(node)) {
                         node.onActive = true;
                         node.onExpand = true;
@@ -120,7 +139,7 @@
              * 菜单展开或关闭
              */
             handleMenuToggle(target) {
-                const newTreeNodes = this.deepCopy(node => {
+                const newTreeNodes = this.deepCopy(this.localSource, node => {
                     if (node.id === target.id) {
                         node.onExpand = !target.onExpand;
                     }
@@ -130,7 +149,7 @@
             /**
              * 深拷贝数据源
              */
-            deepCopy(callback) {
+            deepCopy(tree, callback) {
                 if (typeof callback === 'function') {
                     callback = {
                         enter: callback
@@ -140,7 +159,7 @@
                 const res = [];
                 const map = {};
                 let targetPointer = null;
-                traverse(this.localSource || this.source, {
+                traverse(tree, {
                     enter(node) {
                         const _node = { ...node, children: [] };
                         if (callback && typeof callback.enter === 'function') {
@@ -174,12 +193,9 @@
              * 找出节点所有的父节点
              */
             findParentChain(target) {
-                if (!target) return [];
+                if (!target || !this.localSource) return [];
                 const targetId = typeof target === 'object' ? target.id : target;
                 let parentChain = [];
-                if (!this.localSource) {
-                    this.localSource = this.deepCopy();
-                }
                 traverse(this.localSource, {
                     enter(node, stack) {
                         if (node.id === targetId) {
@@ -195,7 +211,7 @@
             activeDefaultMenu() {
                 let firstMenuFinded = false;
                 let activeMenu = null;
-                const tree = this.deepCopy({
+                const tree = this.deepCopy(this.localSource, {
                     enter(node) {
                         if (!firstMenuFinded) {
                             node.onActive = true;
@@ -212,16 +228,6 @@
                 this.$emit('menu-click', activeMenu);
             }
             
-        },
-        created() {
-            // 如果指定了activeName，watch activeName回调函数会在created之前执行
-            if (!this.localSource) {
-                this.localSource = this.deepCopy();
-            }
-            // 如果没有外部指定激活菜单，默认激活第一个菜单
-            if (!this.activeMenu) {
-                this.activeDefaultMenu();
-            }
         },
     };
 </script>

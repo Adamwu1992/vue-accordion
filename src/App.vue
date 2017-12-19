@@ -5,11 +5,7 @@
 </template>
 
 <script>
-export default {
-  name: 'app',
-  data() {
-      return {
-          source: [
+const data = [
               {
                   id: 'beijing',
                   text: '北京',
@@ -137,7 +133,14 @@ export default {
                       }
                   ]
               }
-          ],
+          ];
+
+
+export default {
+  name: 'app',
+  data() {
+      return {
+          source: [],
           defaultMenu: null
       }
   },
@@ -148,8 +151,11 @@ export default {
   },
   mounted() {
       setTimeout(() => {
+          this.source = data;
+      }, 1000);
+      setTimeout(() => {
           this.defaultMenu = 'jingan'
-      }, 2000);
+      }, 3000);
   }
 }
 </script>
