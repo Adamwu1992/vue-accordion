@@ -75,6 +75,9 @@
                         return;
                     }
                     this.localSource = this.deepCopy(val);
+                    if (!this.activeMenu) {
+                        this.activeDefaultMenu();
+                    }
                 }
             },
             /**
