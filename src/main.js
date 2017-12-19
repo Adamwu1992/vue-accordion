@@ -5,7 +5,11 @@ import './assets/font/iconfont.css'
 
 Vue.use(Accordtion);
 
-new Vue({
+const app = new Vue({
   el: '#app',
   render: h => h(App)
 })
+
+window.changeActiveMenu = name => {
+    app.$emit('change-active-menu', name)
+}

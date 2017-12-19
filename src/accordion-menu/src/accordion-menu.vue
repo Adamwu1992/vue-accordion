@@ -42,7 +42,7 @@
                 },
             },
             activeMenu: {
-                type: [String, Object],
+                type: [String, Object, Number],
             },
             className: {
                 type: [String, Array]
@@ -95,13 +95,7 @@
             activeMenu: {
                 immediate: true,
                 handler(val) {
-                    // 如果没有外部指定激活菜单，默认激活第一个菜单
-                    if (!val) {
-                        if (this.localSource && this.localSource.length > 0) {
-                            this.activeDefaultMenu();
-                        }
-                        return
-                    };
+                    if (!val) return
                     const nodeShouldOnActive = this.findParentChain(this.activeMenu);
                     if (nodeShouldOnActive.length > 0) {
                         this.handleMenuClick(nodeShouldOnActive);

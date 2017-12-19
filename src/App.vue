@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <accordion-menu :className="['my-menu', 'awesome-menu']" :source="source" @menu-click="onMenuClick" :activeMenu="defaultMenu" />
+    <accordion-menu :className="['my-menu', 'awesome-menu']" 
+                    :source="source" 
+                    @menu-click="onMenuClick" 
+                    :activeMenu="toActiveMenu" />
   </div>
 </template>
 
@@ -150,21 +153,31 @@ export default {
   data() {
       return {
           source: [],
-          defaultMenu: null
+          toActiveMenu: null,
+          currentActiveMenu: null
       }
   },
   methods: {
       onMenuClick(node) {
+          this.currentActiveMenu = node && node.id;
           console.log('on menu click', node);
+          console.log('compare\t', this.toActiveMenu, this.currentActiveMenu);
       }
   },
   mounted() {
       setTimeout(() => {
           this.source = data;
+          this.toActiveMenu = 'hongkou';
       }, 1000);
-      setTimeout(() => {
-          this.defaultMenu = 'jingan'
-      }, 3000);
+  },
+  created() {
+      this.$root.$on('change-active-menu', name => {
+          console.log('in created ', name)
+          this.toActiveMenu = name;
+          this.$nextTick(() => {
+              this.toActiveMenu = '';
+          })
+      })
   }
 }
 </script>
