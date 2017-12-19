@@ -74,7 +74,16 @@
                         this.localSource = [];
                         return;
                     }
-                    this.localSource = this.deepCopy(val);
+                    let level = 0;
+                    this.localSource = this.deepCopy(val, {
+                        enter(nodeCopy) {
+                            nodeCopy.level = level;
+                            level += 1;
+                        },
+                        exit() {
+                            level -= 1;
+                        }
+                    });
                     if (!this.activeMenu) {
                         this.activeDefaultMenu();
                     }

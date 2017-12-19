@@ -13,7 +13,20 @@
                     @mouseover="handleHover(node)" 
                     @mouseout="handleHoverOff(node)">
 
-                    <i class="menu-icon iconfont" :class="node.icon || 'icon-default'"></i>
+                    <i class="menu-icon iconfont" :class="node.iconClass || (node.level > 0 && 'icon-default')">
+                        <!-- 常态图标 -->
+                        <img v-if="node.iconUrl" 
+                             v-show="!node.onActive && !node.onHover" 
+                             :src="node.iconUrl" />
+                        <!-- 激活态图标 -->
+                        <img v-if="node.activeIconUrl" 
+                             v-show="node.onActive" 
+                             :src="node.activeIconUrl" />
+                        <!-- 悬停态图标 -->
+                        <img v-if="node.hoverIconUrl || node.iconUrl" 
+                             v-show="!node.onActive && node.onHover" 
+                             :src="node.hoverIconUrl || node.iconUrl" />
+                    </i>
                     <span class="menu-text">{{node.text}}</span>
                     <i class="menu-arrow" 
                        :class="{'arrow-up': node.onExpand}" 

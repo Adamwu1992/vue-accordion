@@ -8,7 +8,21 @@
                 @mouseenter="handleHover(menu)" 
                 @mouseleave="handleHoverOff(menu)">
 
-                <i class="menu-icon iconfont" :class="menu.icon"></i>
+                <i class="menu-icon iconfont" :class="menu.iconClass || (menu.level > 0 && 'icon-default')">
+                    <!-- 常态图标 -->
+                    <img v-if="menu.iconUrl" 
+                         v-show="!menu.onActive && !menu.onHover" 
+                         :src="menu.iconUrl" />
+                    <!-- 激活态图标 -->
+                    <img v-if="menu.activeIconUrl" 
+                         v-show="menu.onActive" 
+                         :src="menu.activeIconUrl" />
+                    <!-- 悬停态图标 -->
+                    <img v-if="menu.hoverIconUrl || menu.iconUrl" 
+                         v-show="!menu.onActive && menu.onHover" 
+                         :src="menu.hoverIconUrl || menu.iconUrl" />
+                </i>
+
                 <shrink-sub-menu :source="menu" 
                                  v-show="menu.onHover"   
                                  @menu-click="handleSubMenuClick" 

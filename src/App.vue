@@ -9,7 +9,10 @@ const data = [
               {
                   id: 'beijing',
                   text: '北京',
-                  icon: 'icon-city',
+                //   iconClass: 'icon-city',
+                  iconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx.png',
+                  activeIconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx-active.png',
+                  hoverIconUrl: 'http://127.0.0.1:8081/src/assets/images/jxfpgl-active.png',
                   children: [
                       {
                           id: 'dongcheng',
@@ -41,7 +44,9 @@ const data = [
               {
                   id: 'shanghai',
                   text: '上海',
-                  icon: 'icon-city2',
+                //   iconClass: 'icon-city2',
+                  iconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx.png',
+                  activeIconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx-active.png',
                   children: [
                       {
                           id: 'huangpu',
@@ -78,7 +83,9 @@ const data = [
               {
                   id: 'tianjin',
                   text: '天津',
-                  icon: 'icon-city3',
+                  iconClass: 'icon-city3',
+                //   iconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx.png',
+                //   activeIconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx-active.png',
                   children: [
                       {
                           id: 'nankai',
@@ -105,7 +112,9 @@ const data = [
               {
                   id: 'chongqing',
                   text: '重庆',
-                  icon: 'icon-city5',
+                //   iconClass: 'icon-city5',
+                //   iconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx.png',
+                //   activeIconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx-active.png',
                   children: [
                       {
                           id: 'yuzhong',
