@@ -46,11 +46,35 @@ describe('Util', function() {
                 ]
             }
         ];
-        it('深度优先遍历所有节点', function() {
+        it('traverse all nodes in enter', function() {
             const excepted = 'mochahellochailattenodegoodsunmoon';
             let s = '';
             traverse(tree, node => {
                 s += node.name;
+            })
+            s.should.be.equal(excepted);
+        });
+        it('traverse all nodes in exit', function() {
+            const excepted = 'chailattehellonodemochagoodmoonsun';
+            let s = '';
+            traverse(tree, {
+                enter() {},
+                exit(node) {
+                    s += node.name;
+                }
+            })
+            s.should.be.equal(excepted);
+        });
+        it('traverse all nodes', function() {
+            const excepted = 'mochahellochaichailattelattehellonodenodemochagoodgoodsunmoonmoonsun';
+            let s = '';
+            traverse(tree, {
+                enter(node) {
+                    s += node.name;
+                },
+                exit(node) {
+                    s += node.name;
+                }
             })
             s.should.be.equal(excepted);
         })
