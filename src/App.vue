@@ -12,10 +12,10 @@ const data = [
               {
                   id: 'beijing',
                   text: '北京',
-                //   iconClass: 'icon-city',
-                  iconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx.png',
-                  activeIconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx-active.png',
-                  hoverIconUrl: 'http://127.0.0.1:8081/src/assets/images/jxfpgl-active.png',
+                  iconClass: 'icon-city',
+                //   iconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx.png',
+                //   activeIconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx-active.png',
+                //   hoverIconUrl: 'http://127.0.0.1:8081/src/assets/images/jxfpgl-active.png',
                   children: [
                       {
                           id: 'dongcheng',
@@ -47,9 +47,9 @@ const data = [
               {
                   id: 'shanghai',
                   text: '上海',
-                //   iconClass: 'icon-city2',
-                  iconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx.png',
-                  activeIconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx-active.png',
+                  iconClass: 'icon-city2',
+                //   iconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx.png',
+                //   activeIconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx-active.png',
                   children: [
                       {
                           id: 'huangpu',
@@ -115,7 +115,7 @@ const data = [
               {
                   id: 'chongqing',
                   text: '重庆',
-                //   iconClass: 'icon-city5',
+                  iconClass: 'icon-city5',
                 //   iconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx.png',
                 //   activeIconUrl: 'http://127.0.0.1:8081/src/assets/images/fpgjx-active.png',
                   children: [

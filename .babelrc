@@ -1,6 +1,23 @@
 {
-  "presets": [
-    ["env", { "modules": false }],
-    "stage-3"
-  ]
+  "env": {
+      "production": {
+        "presets": [
+            ["env", { "modules": false }],
+            "stage-3"
+          ]
+      },
+      "development": {
+        "presets": [
+            ["env", { "modules": false }],
+            "stage-3"
+          ]
+      },
+      "test": {
+        "presets": [
+            [
+              "env",{"targets": {"node": "current"}}
+            ]
+          ]
+      }
+  }
 }
