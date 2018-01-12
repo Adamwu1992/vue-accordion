@@ -1,13 +1,12 @@
 var path = require('path')
 var webpack = require('webpack')
 
-module.exports = {
-//   entry: './src/main.js',
-  entry: './src/accordion-menu/index.js',
+var config = {
+  entry: './src/main.js',
   output: {
-    path: path.resolve(__dirname, './build'),
-    publicPath: '/build/',
-    filename: 'index.js'
+    path: path.resolve(__dirname, '../dist'),
+    publicPath: '/dist/',
+    filename: 'build.js'
   },
   module: {
     rules: [
@@ -88,26 +87,29 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#source-map',
+  plugins: [
+    new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: '"production"'
+        }
+      }),
+      new webpack.optimize.UglifyJsPlugin({
+        sourceMap: true,
+        compress: {
+          warnings: false
+        }
+      }),
+      new webpack.LoaderOptionsPlugin({
+        minimize: true
+      })
+  ]
 }
 
-if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map'
-  // http://vue-loader.vuejs.org/en/workflow/production.html
-  module.exports.plugins = (module.exports.plugins || []).concat([
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"'
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
-      }
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    })
-  ])
-}
+webpack(config, function(err, stats) {
+    if (err) {
+        console.error(err);
+        return;
+    }
+    console.log('build success');
+})
